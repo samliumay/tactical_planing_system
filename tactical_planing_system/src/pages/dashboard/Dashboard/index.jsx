@@ -56,7 +56,7 @@ export default function Dashboard() {
   }, [todayTasks]);
 
   const rpStats = [
-    { label: 'Total Required Time', value: `${totalRT.toFixed(1)}h` },
+    { label: 'Total Required Time', value: `${totalRT.toFixed(1)}h`, className: 'dashboard-stat-card dashboard-stat-card--rt' },
     { 
       label: 'Available Time', 
       value: (
@@ -72,11 +72,13 @@ export default function Dashboard() {
           />
           <span className="text--gray-600">hours</span>
         </div>
-      )
+      ),
+      className: 'dashboard-stat-card dashboard-stat-card--available'
     },
     { 
       label: 'Realism Point', 
-      value: <span className={rpStatus.textColor}>{realismPoint.toFixed(2)}</span>
+      value: <span className={rpStatus.textColor}>{realismPoint.toFixed(2)}</span>,
+      className: 'dashboard-stat-card dashboard-stat-card--rp'
     },
   ];
 
@@ -127,12 +129,6 @@ export default function Dashboard() {
         header={
           <div className="card__header">
             <h2 className="card__title">Today's Tasks</h2>
-            <Link
-              to={ROUTES.DAILY_PLAN}
-              className="text--primary-600 hover--text-primary-800 font-medium"
-            >
-              Manage Tasks →
-            </Link>
           </div>
         }
       >

@@ -25,3 +25,24 @@
   }
 }
 
+// Dashboard stat card variants
+.dashboard-stat-card {
+  &--rt {
+    background-color: var(--color-primary-800) !important;
+    border-color: var(--color-primary-600) !important;
+    border-width: 2px;
+  }
+
+  &--available {
+    background-color: var(--color-accent-800) !important;
+    border-color: var(--color-accent-600) !important;
+    border-width: 2px;
+  }
+
+  &--rp {
+    background-color: var(--color-primary-900) !important;
+    border-color: var(--color-primary-500) !important;
+    border-width: 2px;
+  }
+}
+

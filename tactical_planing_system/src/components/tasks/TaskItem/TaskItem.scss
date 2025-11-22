@@ -126,8 +126,10 @@
     gap: 0.5rem;
     min-height: 40px;
     line-height: 40px;
-    flex-wrap: nowrap;
-    padding-right: 4rem; // Space for action buttons
+    flex-wrap: wrap; // Allow wrapping if needed
+    padding-right: 6rem; // Extra space for action buttons (2 buttons + gap)
+    position: relative; // For absolute positioning of badges/actions if needed
+    margin-right: 0.5rem; // Additional margin for safety
   }
 
   &__title {
