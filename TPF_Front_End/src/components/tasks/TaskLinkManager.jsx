@@ -1,12 +1,34 @@
 /**
  * TaskLinkManager - Component for managing task links
  * 
- * Allows users to:
- * - View all task links
- * - Create new links between tasks
- * - Remove existing links
+ * A comprehensive interface for creating and managing directional links between tasks.
+ * Task links represent relationships and dependencies between tasks in the planning system.
  * 
- * Shows both directional links (linksTo) and reverse links (linkedFrom)
+ * Features:
+ * - View all tasks that have links (either linking to or linked from other tasks)
+ * - Create new directional links between tasks (Task A → Task B)
+ * - Remove existing links
+ * - Visual distinction between "links to" (outgoing) and "linked from" (incoming) relationships
+ * 
+ * Link Direction:
+ * - Links are directional: Task A can link TO Task B
+ * - When Task A links to Task B:
+ *   - Task A's linksTo array contains Task B's ID
+ *   - Task B's linkedFrom array contains Task A's ID
+ * 
+ * Use Cases:
+ * - Managing task dependencies
+ * - Creating task sequences
+ * - Linking related tasks
+ * - Building task relationship networks
+ * 
+ * The component uses PlanningContext to:
+ * - Access all tasks
+ * - Create links via linkTask()
+ * - Remove links via unlinkTask()
+ * - Retrieve task details via getTaskById()
+ * 
+ * @returns {JSX.Element} Task link management interface with link creation form and link list
  */
 
 import { useState, useMemo } from 'react';
@@ -14,17 +36,38 @@ import { usePlanning } from '../../features/planing/PlanningContext';
 import { getImportanceLabel } from '../../config/functions/importanceLevel';
 import { filterTasksWithLinks } from '../../config/functions/taskFilters';
 
+/**
+ * TaskLinkManager Component
+ * 
+ * Provides UI for creating and managing task links. Displays a form for creating
+ * new links and a list of all tasks with their link relationships.
+ */
 export default function TaskLinkManager() {
+  // Get PlanningContext functions and state
   const { tasks, linkTask, unlinkTask, getTaskById } = usePlanning();
+  
+  // Form state for creating new links
   const [fromTaskId, setFromTaskId] = useState('');
   const [toTaskId, setToTaskId] = useState('');
   const [showLinkForm, setShowLinkForm] = useState(false);
 
-  // Get all tasks with links
+  /**
+   * Get all tasks that have links (either linking to or linked from other tasks)
+   * Memoized to avoid recalculation on every render.
+   */
   const tasksWithLinks = useMemo(() => {
     return filterTasksWithLinks(tasks);
   }, [tasks]);
 
+  /**
+   * Handles creation of a new task link
+   * 
+   * Validates that:
+   * - Both source and target tasks are selected
+   * - A task cannot link to itself
+   * 
+   * Creates the link via PlanningContext and resets the form.
+   */
   const handleCreateLink = () => {
     if (!fromTaskId || !toTaskId) {
       alert('Please select both tasks');
@@ -34,12 +77,22 @@ export default function TaskLinkManager() {
       alert('A task cannot link to itself');
       return;
     }
+    // Create the directional link (fromTaskId → toTaskId)
     linkTask(parseFloat(fromTaskId), parseFloat(toTaskId));
+    // Reset form
     setFromTaskId('');
     setToTaskId('');
     setShowLinkForm(false);
   };
 
+  /**
+   * Handles removal of an existing task link
+   * 
+   * Confirms with user before removing the link, as this is a destructive action.
+   * 
+   * @param {number} fromId - ID of the task that links (source)
+   * @param {number} toId - ID of the task being linked to (target)
+   */
   const handleRemoveLink = (fromId, toId) => {
     if (window.confirm('Are you sure you want to remove this link?')) {
       unlinkTask(fromId, toId);

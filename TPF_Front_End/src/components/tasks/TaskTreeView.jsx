@@ -1,39 +1,92 @@
 /**
  * TaskTreeView - Visual tree diagram showing task relationships
  * 
- * Displays tasks in a hierarchical tree structure showing:
- * - Parent-child relationships (subtasks)
- * - Task links (directional connections)
+ * A hierarchical tree visualization component that displays tasks in their
+ * parent-child structure, showing both subtask relationships and task links.
  * 
  * Features:
- * - Expandable/collapsible nodes
- * - Visual indicators for links
- * - Click to navigate/edit tasks
+ * - Hierarchical tree structure: Shows parent tasks and nested subtasks
+ * - Expandable/collapsible nodes: Click to expand/collapse branches
+ * - Task links visualization: Displays directional links between tasks
+ * - Visual indicators: Shows which tasks have links (🔗 icon)
+ * - Task selection: Click on tasks to select them (calls onTaskSelect callback)
+ * - Importance level badges: Color-coded importance indicators
+ * 
+ * Tree Structure:
+ * ┌─ Task 1 [High] 🔗
+ * │  ├─ Subtask 1.1
+ * │  └─ Subtask 1.2
+ * │  → Linked Task A
+ * └─ Task 2 [Must]
+ * 
+ * The component uses PlanningContext to:
+ * - Get task tree structure via getTaskTree()
+ * - Retrieve task details via getTaskById()
+ * 
+ * Use Cases:
+ * - Visualizing task hierarchies
+ * - Understanding task relationships
+ * - Navigating complex task structures
+ * - Task relationship analysis
+ * 
+ * @param {Object} props - Component props
+ * @param {Function} [props.onTaskSelect] - Optional callback when a task is clicked
+ *   Receives the selected task object as parameter
+ * @returns {JSX.Element} Interactive task tree visualization component
  */
 
 import { useState, useMemo } from 'react';
 import { usePlanning } from '../../features/planing/PlanningContext';
 import { getImportanceLabel, getImportanceColor } from '../../config/functions/importanceLevel';
 
+/**
+ * TaskTreeView Component
+ * 
+ * Renders an interactive tree view of tasks showing hierarchical relationships
+ * and links. Supports expand/collapse functionality and task selection.
+ */
 export default function TaskTreeView({ onTaskSelect }) {
+  // Get PlanningContext functions and state
   const { tasks, getTaskTree, getTaskById } = usePlanning();
+  
+  // State for managing expanded/collapsed nodes in the tree
   const [expandedNodes, setExpandedNodes] = useState(new Set());
+  
+  // State for tracking which task is currently selected
   const [selectedTaskId, setSelectedTaskId] = useState(null);
 
+  /**
+   * Get the task tree structure (hierarchical tree of tasks with subtasks)
+   * Memoized to avoid recalculation on every render.
+   */
   const taskTree = useMemo(() => getTaskTree(), [getTaskTree]);
 
+  /**
+   * Toggle the expanded/collapsed state of a tree node
+   * 
+   * Adds or removes the task ID from the expandedNodes Set.
+   * 
+   * @param {number} taskId - ID of the task node to toggle
+   */
   const toggleNode = (taskId) => {
     setExpandedNodes((prev) => {
       const next = new Set(prev);
       if (next.has(taskId)) {
-        next.delete(taskId);
+        next.delete(taskId); // Collapse if expanded
       } else {
-        next.add(taskId);
+        next.add(taskId); // Expand if collapsed
       }
       return next;
     });
   };
 
+  /**
+   * Handles task click event
+   * 
+   * Sets the selected task and calls the onTaskSelect callback if provided.
+   * 
+   * @param {number} taskId - ID of the clicked task
+   */
   const handleTaskClick = (taskId) => {
     setSelectedTaskId(taskId);
     if (onTaskSelect) {

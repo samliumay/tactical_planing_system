@@ -1,3 +1,29 @@
+/**
+ * App - Main Application Component with Routing Configuration
+ * 
+ * This is the root component that sets up the application's routing structure
+ * using React Router. It defines all routes, both public and protected.
+ * 
+ * Routing Structure:
+ * - Public Routes: Login page (accessible without authentication)
+ * - Protected Routes: All other pages (require authentication via ProtectedRoute)
+ * 
+ * Route Organization:
+ * - Auth routes: Login
+ * - Planning routes: Dashboard, All Tasks, Daily Tasks, Add Task, Task Tree, Task Configuration
+ * - Observations routes: Current, Waiting for Analysis, All, Analysis
+ * - Diamond System routes: Diagram, Add Entity, All Entities
+ * - Settings routes: Color Settings, Emergency Settings
+ * 
+ * Route Protection:
+ * - The Layout component is wrapped in ProtectedRoute, which redirects
+ *   unauthenticated users to the login page
+ * - All routes inside the Layout are automatically protected
+ * - A catch-all route redirects unknown paths to login
+ * 
+ * All route paths are imported from the centralized ROUTES config (no hardcoded paths).
+ */
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -28,14 +54,24 @@ import EmergencySettings from './pages/settings/EmergencySettings';
 
 import { ROUTES } from './config/routes';
 
+/**
+ * App Component - Main application routing structure
+ * 
+ * Sets up React Router with all application routes. Routes are organized into:
+ * - Public routes (Login)
+ * - Protected routes (all other pages wrapped in ProtectedRoute)
+ * 
+ * @returns {JSX.Element} Application routing structure
+ */
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public route - Login */}
+        {/* Public route - Login (accessible without authentication) */}
         <Route path={ROUTES.LOGIN} element={<Login />} />
         
-        {/* Protected routes - require authentication */}
+        {/* Protected routes - require authentication via ProtectedRoute wrapper */}
+        {/* All routes inside this Route are nested under Layout component */}
         <Route
           path="/"
           element={
@@ -44,6 +80,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          {/* Dashboard - Default route (index) */}
           <Route index element={<Dashboard />} />
           
           {/* Planning routes */}
@@ -69,7 +106,8 @@ function App() {
           <Route path={ROUTES.SETTINGS.EMERGENCY} element={<EmergencySettings />} />
         </Route>
         
-        {/* Catch all - redirect to login */}
+        {/* Catch-all route - redirect unknown paths to login */}
+        {/* This handles 404 cases and redirects unauthenticated users */}
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
       </Routes>
     </BrowserRouter>
