@@ -1,4 +1,4 @@
-# PF-D (Planning Framework - Digital) v1.0
+# TPF (Tactical Planning Framework) v1.0
 
 ![Status](https://img.shields.io/badge/Status-Under%20Construction-yellow)
 ![Version](https://img.shields.io/badge/Version-1.0-blue)
@@ -6,9 +6,9 @@
 ![Stack](https://img.shields.io/badge/stack-Spring%20Boot%20%7C%20React%20%7C%20PostgreSQL-green)
 
 ## Overview
-PF-D is a structured personal life operating system designed to apply engineering principles to daily management. It aims to optimize executive function challenges (specifically ADHD) not by simplifying life, but by creating a rigorous, data-driven environment that supports analytical decision-making.
+TPF is a structured personal life operating system designed to apply engineering principles to daily management. It aims to optimize executive function challenges (specifically ADHD) not by simplifying life, but by creating a rigorous, data-driven environment that supports analytical decision-making.
 
-This repository hosts the digital implementation of the **PF-D Framework v1.0**.
+This repository hosts the digital implementation of the **Tactical Planning Framework (TPF) v1.0**.
 
 > **Note:** This documentation outlines the system architecture and philosophy. It is not a user manual or a finalized Software Requirements Specification (SRS). The framework is subject to iterative updates.
 
@@ -16,7 +16,7 @@ This repository hosts the digital implementation of the **PF-D Framework v1.0**.
 
 This project was born from a specific need: **Optimizing an ADHD mind that thrives on complexity rather than simplicity.**
 
-While traditional advice suggests minimizing planning for ADHD, PF-D takes the opposite approach: **Hyper-Systematization.** The goal is to externalize memory and logic into a reliable system.
+While traditional advice suggests minimizing planning for ADHD, TPF takes the opposite approach: **Hyper-Systematization.** The goal is to externalize memory and logic into a reliable system.
 
 ### Key Objectives:
 1.  **Analytical Decision Making:** Removing emotional bias from daily choices by relying on a strict algorithmic base.
@@ -40,7 +40,7 @@ An algorithmic approach that automatically allocates tasks to daily slots to min
     * **Atomic:** Tasks marked as "Non-dividable" (e.g., Exams, Meetings) reserve continuous time blocks.
 
 ### 3. Graph-Based Dependency System
-Unlike linear to-do lists, PF-D utilizes an **N-to-N dependency graph**.
+Unlike linear to-do lists, TPF utilizes an **N-to-N dependency graph**.
 * **Complex Blocking:** Task X can be a prerequisite for Task Y and Z simultaneously.
 * **Level Agnostic:** Dependencies are independent of Importance Levels (IL). A Level 3 task (e.g., "Buy batteries") can block a Level 1 task (e.g., "Final Exam").
 
